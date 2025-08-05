@@ -12,8 +12,3 @@ spring:
       ddl-auto: none
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-    #sql:
-      #init:
-      #mode: always # cambiar a always
-    #schema-locations: classpath:schema.sql
