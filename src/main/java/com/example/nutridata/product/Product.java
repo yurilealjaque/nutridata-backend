@@ -1,11 +1,14 @@
 package com.example.nutridata.product;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name="producto")
+@Getter @Setter
 public class Product {
 
     @Id                                       // Primary Key
@@ -24,69 +27,5 @@ public class Product {
 
     public Product() {
 
-    }
-
-    public Integer getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(Integer id_producto) {
-        this.id_producto = id_producto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public int getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(int precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public int getCategoria_id() {
-        return categoria_id;
-    }
-
-    public void setCategoria_id(int categoria_id) {
-        this.categoria_id = categoria_id;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public LocalDate getFecha_creacion() {
-        return fecha_creacion;
-    }
-
-    public void setFecha_creacion(LocalDate fecha_creacion) {
-        this.fecha_creacion = fecha_creacion;
     }
 }
