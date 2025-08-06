@@ -1,0 +1,15 @@
+meta {
+  name: delete product by id
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{apiUrl}}/productos/16
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

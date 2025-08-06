@@ -1,0 +1,24 @@
+meta {
+  name: create new product
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/productos
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Cinta metrica",
+    "description": "Cinta métrica corporal para nutrición y fitness. Flexible, precisa y fácil de usar. Ideal para medir cintura, brazos, piernas y más. Perfecta para seguimiento de progreso en planes nutricionales y entrenamiento físico.",
+    "price": 29990,
+    "stock": 5
+  }
+}
+
+settings {
+  encodeUrl: true
+}
