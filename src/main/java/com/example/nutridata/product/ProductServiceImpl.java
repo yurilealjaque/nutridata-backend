@@ -15,28 +15,28 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> listarTodos() {
+    public List<Product> getAll() {
         return productRepository.findAll();
     }
 
     @Override
-    public Optional<Product> obtenerPorId(Integer id) {
-        return productRepository.findById(id);
+    public Optional<Product> getById(Integer id) {
+        return this.productRepository.findById(id);
     }
 
     @Override
-    public Product guardar(Product product) {
+    public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
     @Override
-    public Product actualizar(Integer id, Product product) {
-        product.setId_producto(id);
+    public Product updateProduct(Integer id, Product product) {
+        product.setId(id);
         return productRepository.save(product);
     }
 
     @Override
-    public void eliminar(Integer id) {
+    public void deleteById(Integer id) {
         productRepository.deleteById(id);
     }
 }

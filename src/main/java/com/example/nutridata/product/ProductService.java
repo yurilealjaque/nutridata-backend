@@ -5,10 +5,10 @@ import java.util.Optional;
 
 public interface ProductService {
 
-    List<Product> listarTodos();
-    Optional<Product> obtenerPorId(Integer id);
-    Product guardar(Product product);
-    Product actualizar(Integer id, Product product);
-    void eliminar(Integer id);
+    List<Product> getAll();
+    Optional<Product> getById(Integer id);
+    Product saveProduct(Product product);
+    Product updateProduct(Integer id, Product product);
+    void deleteById(Integer id);
 
 }
