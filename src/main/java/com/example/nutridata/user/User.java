@@ -22,5 +22,4 @@ public class User {
     private String occupation;
     private Timestamp createdAt;
     private Boolean active;
-
 }
