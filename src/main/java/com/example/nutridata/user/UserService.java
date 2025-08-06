@@ -1,16 +1,7 @@
 package com.example.nutridata.user;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
-
-@Service
-@RequiredArgsConstructor
-public class UserService {
-    private final UserRepository userRepository;
-
-    public List<User> userList() {
-        return userRepository.findAll();
-    }
+public interface UserService  {
+    Page<User> getAllUser(int page, int size, String sortBy);
 }
