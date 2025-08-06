@@ -1,19 +1,27 @@
 package com.example.nutridata.product;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "product")
-@Getter @Setter
+@Getter
+@Setter
 public class Product {
 
-    @Id                                       // Primary Key
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+
     private String name;
+
     private String description;
-    private int price;
+
+    private Double price;
+
     private int stock;
+
 }
