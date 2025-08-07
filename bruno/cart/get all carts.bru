@@ -1,0 +1,15 @@
+meta {
+  name: get all carts
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{apiUrl}}/cart
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}
