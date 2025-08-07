@@ -1,0 +1,15 @@
+meta {
+  name: get sale by id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{apiUrl}}/sale/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

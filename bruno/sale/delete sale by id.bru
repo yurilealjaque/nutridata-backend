@@ -1,0 +1,15 @@
+meta {
+  name: delete sale by id
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{apiUrl}}/sale/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

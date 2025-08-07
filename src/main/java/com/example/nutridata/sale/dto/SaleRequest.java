@@ -1,8 +1,9 @@
 package com.example.nutridata.sale.dto;
-
 import java.sql.Timestamp;
 
 public record SaleRequest(
+        Long id,
+        Timestamp updatedAt,
         Timestamp createdAt,
         Double total_pay,
         String payment_method,

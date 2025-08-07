@@ -46,7 +46,7 @@ public class SaleServiceImpl implements SaleService {
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sale not found with id " + id));
 
-        sale.setCreatedAt(saleRequest.createdAt());
+        sale.setUpdatedAt(saleRequest.updatedAt());
         sale.setTotal_pay(saleRequest.total_pay());
         sale.setPayment_method(saleRequest.payment_method());
         sale.setSale_status(saleRequest.sale_status());
@@ -61,6 +61,7 @@ public class SaleServiceImpl implements SaleService {
     private SaleResponse mapToResponse(Sale sale) {
         return new SaleResponse(
                 sale.getId(),
+                sale.getUpdatedAt(),
                 sale.getCreatedAt(),
                 sale.getTotal_pay(),
                 sale.getPayment_method(),
