@@ -1,0 +1,23 @@
+meta {
+  name: create new sale
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/sale
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "total_pay":55000.00,
+    "payment_method":"debito",
+    "sale_status":"rechazado"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
