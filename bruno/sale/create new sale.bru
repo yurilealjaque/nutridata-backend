@@ -6,8 +6,16 @@ meta {
 
 post {
   url: {{apiUrl}}/sale
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "total_pay":55000.00,
+    "payment_method":"debito",
+    "sale_status":"rechazado"
+  }
 }
 
 settings {
