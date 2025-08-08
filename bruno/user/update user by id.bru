@@ -1,0 +1,26 @@
+meta {
+  name: update user by id
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/users/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "phoneNumber": "+1-555-123-4567",
+    "password": "securePassword123",
+    "occupation": "Software Developer"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
