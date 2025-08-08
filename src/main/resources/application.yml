@@ -5,33 +5,34 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    # driver-class-name: org.postgresql.Driver
     #hikari:
-      #ssl: true
-      #ssl-mode: require
-      #connection-timeout: 20000
-      #maximum-pool-size: 5
+    #ssl: true
+    #ssl-mode: require
+    #connection-timeout: 20000
+    #maximum-pool-size: 5
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        temp:
-          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # properties:
+    #   hibernate:
+    #     dialect: org.hibernate.dialect.PostgreSQLDialect
+    # temp:
+    #   use_jdbc_metadata_defaults: false
 
-  app:
+app:
   security:
     cors:
       dev: true
-      allowed-origins: "http://localhost:5173"
+      # allowed-origins: "http://localhost:5173"
 #server:
-  #port: 8089
+#port: 8089
 
-logging:
-  level:
-    org:
-      apache:
-        coyote: WARN
+# logging:
+#   level:
+#     org:
+#       apache:
+#         coyote: WARN

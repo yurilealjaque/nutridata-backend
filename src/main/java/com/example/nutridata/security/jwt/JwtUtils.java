@@ -1,15 +1,11 @@
 package com.example.nutridata.security.jwt;
 
-
-
-
 import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -20,22 +16,11 @@ public class JwtUtils {
     private final long expirationMs;
 
     public JwtUtils() {
-        //Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        try {
-            Dotenv dotenv = Dotenv.configure()
-                    .directory("./") // Busca en el directorio raíz del proyecto
-                    .ignoreIfMissing()
-                    .load();
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
-            // Carga con valores por defecto
-            String secret = dotenv.get("JWT_SECRET");
-            this.expirationMs = Long.parseLong(dotenv.get("JWT_EXPIRATION_MS", "3600000"));
-            // Generación segura de la clave
-            this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error al inicializar JwtUtils: " + e.getMessage(), e);
-        }
+        String secret = dotenv.get("JWT_SECRET");
+        this.expirationMs = Long.parseLong(dotenv.get("JWT_EXPIRATION_MS", "3600000"));
+        this.signingKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     // Generar JWT
