@@ -1,18 +1,18 @@
 meta {
-  name: create new cart
+  name: update category by id
   type: http
-  seq: 3
+  seq: 4
 }
 
-post {
-  url: {{apiUrl}}/
+put {
+  url: {{apiUrl}}/categories/2
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "productQuantity": 10
+    "name": "Hola Mundo" 
   }
 }
 

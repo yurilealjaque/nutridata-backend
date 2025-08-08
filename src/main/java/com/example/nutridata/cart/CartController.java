@@ -19,7 +19,7 @@ public class CartController {
 
     @GetMapping
     public ResponseEntity<Page<CartResponse>> getAllCarts(Pageable pageable) {
-        Page<CartResponse> carts = cartService.getAllCart(pageable);
+        Page<CartResponse> carts = cartService.getAllCarts(pageable);
 
         return ResponseEntity.ok(carts);
     }
@@ -40,12 +40,12 @@ public class CartController {
         return ResponseEntity.ok(cartService.saveCart(cartRequest));
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateCart(
             @PathVariable Long id,
             @Valid @RequestBody CartRequest cartRequest) {
         try {
-            CartResponse updatedCart = cartService.updateCart(id, cartRequest);
+            CartResponse updatedCart = cartService.updateCartById(id, cartRequest);
 
             return ResponseEntity.status(HttpStatus.OK).body(updatedCart);
         } catch (Exception e) {

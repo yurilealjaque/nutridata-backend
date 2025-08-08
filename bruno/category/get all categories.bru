@@ -1,11 +1,11 @@
 meta {
-  name: delete cart by id
+  name: get all categories
   type: http
-  seq: 5
+  seq: 1
 }
 
-delete {
-  url: {{apiUrl}}/carts/4
+get {
+  url: {{apiUrl}}/categories
   body: none
   auth: inherit
 }

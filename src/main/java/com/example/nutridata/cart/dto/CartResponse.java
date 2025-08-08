@@ -6,8 +6,9 @@ import com.example.nutridata.sale.Sale;
 import java.sql.Timestamp;
 
 public record CartResponse(
-        Long id,
-        Integer productQuantity,
-        Timestamp createdAt,
-        Timestamp updatedAt) {
+
+                Long id,
+                Integer productQuantity,
+                Timestamp createdAt,
+                Timestamp updatedAt) {
 }
