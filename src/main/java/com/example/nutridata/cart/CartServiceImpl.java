@@ -2,6 +2,8 @@ package com.example.nutridata.cart;
 
 import com.example.nutridata.cart.dto.CartRequest;
 import com.example.nutridata.cart.dto.CartResponse;
+import com.example.nutridata.product.Product;
+import com.example.nutridata.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Page<CartResponse> getAllCarts(Pageable pageable) {
@@ -35,6 +38,17 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public CartResponse addProductToCart(Long cartId, Long productId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found with id: " + cartId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        cart.getProducts().add(product);
+        return mapToResponse(cartRepository.save(cart));
+    }
+
+    @Override
     public CartResponse updateCartById(Long id, CartRequest cartRequest) {
         Cart cart = cartRepository
                 .findById(id)
@@ -54,6 +68,7 @@ public class CartServiceImpl implements CartService {
         return new CartResponse(
                 cart.getId(),
                 cart.getProductQuantity(),
+                cart.getProducts(),
                 cart.getCreatedAt(),
                 cart.getUpdatedAt());
 
