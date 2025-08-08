@@ -25,10 +25,7 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println("✅ Roles iniciales verificados/creados.");
     }
 
-
     private void crearRolSiNoExiste(NameRol nameRol) {
-        rolRepository.findByNombre(nameRol).orElseGet(() ->
-                rolRepository.save(new Rol(null, nameRol))
-        );
+        rolRepository.findByName(nameRol).orElseGet(() -> rolRepository.save(new Rol(null, nameRol)));
     }
 }

@@ -1,7 +1,8 @@
 package com.example.nutridata.security.config;
 
 import com.example.nutridata.security.jwt.JwtAuthenticationFilter;
-import com.example.nutridata.security.service.UsersServiceImpl;
+import com.example.nutridata.security.service.UsersDetailsServiceImpl;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
-    private final UsersServiceImpl userServiceImpl;
+    private final UsersDetailsServiceImpl userServiceImpl;
 
     // 🔹 Se puede cambiar en application.properties
     @Value("${app.security.cors.dev:true}")
@@ -44,7 +45,9 @@ public class SecurityConfig {
                 var corsConfig = new CorsConfiguration();
                 corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // React Dev
                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                corsConfig.setAllowedHeaders(List.of("Authorization","Content-Type","Cache-Control"));
+                // corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type",
+                // "Cache-Control"));
+                corsConfig.setAllowedHeaders(List.of("*"));
                 corsConfig.setAllowCredentials(true);
                 return corsConfig;
             }));
@@ -54,7 +57,7 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/productos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/productos/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**").hasAuthority("ROLE_ADMIN")
@@ -65,8 +68,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Resto requiere autenticación
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .userDetailsService(userServiceImpl)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

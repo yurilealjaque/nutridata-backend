@@ -11,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class AuthService {
             throw new RuntimeException("El email ya está registrado"); // Puedes usar EmailAlreadyUsedException
         }
 
-        Rol rolUser = rolRepository.findByNombre(ROLE_USER)
+        Rol rolUser = rolRepository.findByName(ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Rol ROLE_USER no encontrado"));
 
         Users newUser = new Users();

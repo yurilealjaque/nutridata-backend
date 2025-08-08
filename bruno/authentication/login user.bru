@@ -1,0 +1,22 @@
+meta {
+  name: login user
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{apiUrl}}/auth/login
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "mario@gmail.com",
+    "password":"root123"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
