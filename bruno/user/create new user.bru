@@ -1,0 +1,26 @@
+meta {
+  name: create new user
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "phoneNumber": "+1-555-123-4567",
+    "password": "securePassword123",
+    "occupation": "Software Developer"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
