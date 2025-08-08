@@ -5,9 +5,15 @@ meta {
 }
 
 put {
-  url: {{apiUrl}}/
-  body: none
+  url: {{apiUrl}}/carts/5
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "productQuantity": 10
+  }
 }
 
 settings {
