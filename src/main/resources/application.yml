@@ -2,9 +2,9 @@ spring:
   application:
     name: nutridata
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://ep-shiny-hall-acwiizos-pooler.sa-east-1.aws.neon.tech:5432/nutridata
+    username: neondb_owner
+    password: 4~sg?EclZ8rd2}Oy
     driver-class-name: org.postgresql.Driver
     #hikari:
       #ssl: true
