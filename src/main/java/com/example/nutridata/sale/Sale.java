@@ -1,6 +1,7 @@
 package com.example.nutridata.sale;
 
 
+import com.example.nutridata.saleDataile.SaleDetail;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "sale")
@@ -31,5 +33,8 @@ public class Sale {
     private String sale_status;
 
     private String sale_number;
+
+    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    private List<SaleDetail> saleDetails;
 
 }
