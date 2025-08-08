@@ -1,0 +1,21 @@
+meta {
+  name: update category by id
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{apiUrl}}/categories/2
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Hola Mundo" 
+  }
+}
+
+settings {
+  encodeUrl: true
+}

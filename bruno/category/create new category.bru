@@ -1,0 +1,22 @@
+meta {
+  name: create new category
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{apiUrl}}/categories
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Instrumentos de Medicion",
+    "description": "Herramienta para medir"
+  }
+}
+
+settings {
+  encodeUrl: true
+}
