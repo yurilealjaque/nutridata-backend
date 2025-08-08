@@ -1,11 +1,11 @@
 meta {
-  name: update cart by id
+  name: add product to cart
   type: http
-  seq: 5
+  seq: 4
 }
 
-put {
-  url: {{apiUrl}}/carts/5
+post {
+  url: {{apiUrl}}/carts/3/products/5
   body: json
   auth: inherit
 }

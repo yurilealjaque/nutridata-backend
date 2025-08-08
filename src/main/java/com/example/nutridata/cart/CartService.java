@@ -13,6 +13,8 @@ public interface CartService {
 
     CartResponse saveCart(CartRequest cartRequest);
 
+    CartResponse addProductToCart(Long cartId, Long productId);
+
     CartResponse updateCartById(Long id, CartRequest cartRequest);
 
     void deleteCartById(Long id);
