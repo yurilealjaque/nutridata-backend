@@ -1,8 +1,8 @@
 package com.example.nutridata.security.config;
 
-import com.example.nutridata.security.model.NameRol;
-import com.example.nutridata.security.model.Rol;
-import com.example.nutridata.security.repository.RolRepository;
+import com.example.nutridata.role.Role;
+import com.example.nutridata.role.RoleNames;
+import com.example.nutridata.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,21 +11,24 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
-    private final RolRepository rolRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public void run(String... args) {
-        inicializarRoles();
+        initializeRoles();
     }
 
-    private void inicializarRoles() {
-        crearRolSiNoExiste(NameRol.ROLE_USER);
-        crearRolSiNoExiste(NameRol.ROLE_ADMIN);
+    private void initializeRoles() {
+        createRoleIfNotExists(RoleNames.ROLE_USER);
+        createRoleIfNotExists(RoleNames.ROLE_ADMIN);
 
-        System.out.println("✅ Roles iniciales verificados/creados.");
+        System.out.println("Roles iniciales verificados/creados.");
     }
 
-    private void crearRolSiNoExiste(NameRol nameRol) {
-        rolRepository.findByName(nameRol).orElseGet(() -> rolRepository.save(new Rol(null, nameRol)));
+    private void createRoleIfNotExists(RoleNames roleName) {
+        roleRepository
+                .findByName(roleName)
+                .orElseGet(() -> roleRepository.save(new Role(null, roleName)));
     }
+
 }

@@ -36,8 +36,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> saveUser(@Valid @RequestBody UserRequest userRequest) {
-        return ResponseEntity.ok(userService.saveUser(userRequest));
+    public ResponseEntity<?> saveUser(@Valid @RequestBody UserRequest userRequest) {
+        try {
+            return ResponseEntity.ok(userService.saveUser(userRequest));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -49,7 +55,7 @@ public class UserController {
 
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found with id: " + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

@@ -1,11 +1,12 @@
 package com.example.nutridata.security.jwt;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.security.Key;
 import java.util.Date;
 
@@ -13,17 +14,17 @@ import java.util.Date;
 public class JwtUtils {
 
     private final Key signingKey;
+
     private final long expirationMs;
 
     public JwtUtils() {
         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
         String secret = dotenv.get("JWT_SECRET");
-        this.expirationMs = Long.parseLong(dotenv.get("JWT_EXPIRATION_MS", "3600000"));
+        this.expirationMs = Long.parseLong(dotenv.get("JWT_EXPIRATION_MS"));
         this.signingKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    // Generar JWT
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
@@ -33,7 +34,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    // Extraer username (subject)
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
@@ -43,10 +43,10 @@ public class JwtUtils {
                 .getSubject();
     }
 
-    // Validar JWT
     public boolean validateToken(String token, UserDetails userDetails) {
         try {
             final String username = getUsernameFromToken(token);
+
             return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -60,6 +60,8 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody()
                 .getExpiration();
+
         return expiration.before(new Date());
     }
+
 }

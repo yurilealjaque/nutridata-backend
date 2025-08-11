@@ -1,8 +1,7 @@
 package com.example.nutridata.security.config;
 
 import com.example.nutridata.security.jwt.JwtAuthenticationFilter;
-import com.example.nutridata.security.service.UsersDetailsServiceImpl;
-
+import com.example.nutridata.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,42 +17,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-
 import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtFilter;
-    private final UsersDetailsServiceImpl userServiceImpl;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // 🔹 Se puede cambiar en application.properties
+    private final UserServiceImpl userServiceImpl;
+
+    // Se puede cambiar en application.yml
     @Value("${app.security.cors.dev:true}")
     private boolean devCorsEnabled;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable);
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        // 🔹 Si estamos en modo dev, deshabilitamos CORS (Postman libre)
-        // 🔹 Si no, habilitamos CORS para React u orígenes específicos
+        // Si estamos en modo dev, deshabilitamos CORS (Postman libre)
+        // Si no, habilitamos CORS para React u orígenes específicos
         if (devCorsEnabled) {
-            http.cors(AbstractHttpConfigurer::disable);
+            httpSecurity.cors(AbstractHttpConfigurer::disable);
         } else {
-            http.cors(cors -> cors.configurationSource(request -> {
-                var corsConfig = new CorsConfiguration();
+            httpSecurity.cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration corsConfig = new CorsConfiguration();
+
                 corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // React Dev
                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                // corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type",
-                // "Cache-Control"));
-                corsConfig.setAllowedHeaders(List.of("*"));
+                corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type",
+                        "Cache-Control"));
                 corsConfig.setAllowCredentials(true);
+
                 return corsConfig;
             }));
         }
 
-        return http
+        return httpSecurity
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
@@ -62,25 +62,25 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/productos/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/productos/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/productos/**").hasAuthority("ROLE_ADMIN")
-
                         // Endpoints protegidos
                         .requestMatchers("/api/clientes/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-
                         // Resto requiere autenticación
                         .anyRequest().authenticated())
                 .userDetailsService(userServiceImpl)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder();
     }
+
 }
