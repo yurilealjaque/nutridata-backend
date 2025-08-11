@@ -1,62 +1,77 @@
 package com.example.nutridata.security.service;
 
+import com.example.nutridata.role.Role;
+import com.example.nutridata.role.RoleNames;
+import com.example.nutridata.role.RoleRepository;
+import com.example.nutridata.security.dto.LoginRequest;
 import com.example.nutridata.security.dto.LoginResponse;
+import com.example.nutridata.security.dto.RegisterRequest;
 import com.example.nutridata.security.jwt.JwtUtils;
-import com.example.nutridata.security.model.Rol;
-import com.example.nutridata.security.model.Users;
-import com.example.nutridata.security.repository.RolRepository;
-import com.example.nutridata.security.repository.UsersRepository;
+import com.example.nutridata.user.User;
+import com.example.nutridata.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.stream.Collectors;
-
-import static com.example.nutridata.security.model.NameRol.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UsersRepository usersRepository;
-    private final RolRepository rolRepository;
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
+
     private final JwtUtils jwtUtils;
 
-    // Registro: crea usuario con rol USER
-    public void registrar(String name, String email, String password) {
-        if (usersRepository.existsByEmail(email)) {
-            throw new RuntimeException("El email ya está registrado"); // Puedes usar EmailAlreadyUsedException
+    public void register(RegisterRequest registerRequest) {
+        if (userRepository.existsByEmail(registerRequest.email())) {
+            throw new RuntimeException("El email ya está registrado");
         }
 
-        Rol rolUser = rolRepository.findByName(ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Rol ROLE_USER no encontrado"));
+        Role foundRole = roleRepository
+                .findByName(RoleNames.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Role ROLE_USER no encontrado"));
 
-        Users newUser = new Users();
-        newUser.setName(name);
-        newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(password));
-        newUser.setRoles(Collections.singleton(rolUser));
+        User newUser = new User();
 
-        usersRepository.save(newUser);
+        newUser.setName(registerRequest.name());
+        newUser.setLastName(registerRequest.lastName());
+        newUser.setEmail(registerRequest.email());
+        newUser.setPhoneNumber(registerRequest.phoneNumber());
+        newUser.setPassword(passwordEncoder.encode(registerRequest.password()));
+        newUser.setOccupation(registerRequest.occupation());
+        newUser.setRoles(Collections.singleton(foundRole));
+
+        userRepository.save(newUser);
     }
 
-    // Login: valida credenciales y genera LoginResponse con token
-    public LoginResponse login(String email, String password) {
-        Users users = usersRepository.findByEmail(email)
+    public LoginResponse login(LoginRequest loginRequest) {
+        User foundUser = userRepository
+                .findByEmail(loginRequest.email())
                 .orElseThrow(() -> new BadCredentialsException("Credenciales inválidas"));
 
-        if (!passwordEncoder.matches(password, users.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.password(), foundUser.getPassword())) {
             throw new BadCredentialsException("Credenciales inválidas");
         }
 
-        String token = jwtUtils.generateToken(email);
-        String roles = users.getRoles().stream()
-                .map(r -> r.getName().name()) // Convierte a texto (USER, ADMIN)
+        String token = jwtUtils.generateToken(loginRequest.email());
+
+        String roles = foundUser
+                .getRoles()
+                .stream()
+                .map(foundRole -> foundRole.getName().name())
                 .collect(Collectors.joining(","));
 
-        return new LoginResponse(users.getName(), users.getEmail(), token, roles);
+        return new LoginResponse(
+                foundUser.getName(),
+                foundUser.getEmail(),
+                token,
+                roles);
     }
+
 }

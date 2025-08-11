@@ -7,14 +7,17 @@ meta {
 post {
   url: {{apiUrl}}/auth/register
   body: json
-  auth: inherit
+  auth: none
 }
 
 body:json {
   {
-    "name": "mario",
-    "email":"mario@gmail.com",
-    "password":"root123"
+    "name": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "phoneNumber": "+1-555-123-4567",
+    "password": "root123",
+    "occupation": "Software Developer"
   }
 }
 

@@ -7,7 +7,11 @@ import com.example.nutridata.security.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,17 +20,33 @@ public class AuthController {
 
     private final AuthService authService;
 
-    // Registro: retorna 201 sin token (solo crea usuario)
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
-        authService.registrar(request.name(), request.email(), request.password());
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        try {
+            authService.register(registerRequest);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .build();
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
+
     }
 
-    // Login: retorna 200 con LoginResponse (nombre, email, token, roles)
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        LoginResponse response = authService.login(request.email(), request.password());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+        try {
+            LoginResponse response = authService.login(loginRequest);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(e.getMessage());
+        }
     }
+
 }
