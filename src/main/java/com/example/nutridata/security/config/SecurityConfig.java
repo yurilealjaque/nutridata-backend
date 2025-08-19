@@ -28,7 +28,7 @@ public class SecurityConfig {
     private final UserServiceImpl userServiceImpl;
 
     // Se puede cambiar en application.yml
-    @Value("${app.security.cors.dev:true}")
+    @Value("${app.security.cors.dev:false}")
     private boolean devCorsEnabled;
 
     @Bean
