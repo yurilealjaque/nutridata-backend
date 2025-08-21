@@ -43,7 +43,7 @@ public class SecurityConfig {
             httpSecurity.cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration corsConfig = new CorsConfiguration();
 
-                corsConfig.setAllowedOrigins(List.of("http://localhost:5173")); // React Dev
+                corsConfig.setAllowedOrigins(List.of("http://localhost:5173", "https://nutridata.vercel.app/"));
                 corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type",
                         "Cache-Control"));
